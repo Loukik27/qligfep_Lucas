@@ -26,7 +26,7 @@ class Run(object):
         self.temp = temp
         self.cluster = cluster
         self.esc = esc
-        self.FEP = FEP.strip('/')
+        self.FEP = FEP.rstrip('/')
         self.FromGly = False
         self.start = start
         if self.FEP[4:7] == 'GLY':

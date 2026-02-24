@@ -22,18 +22,9 @@ LOCAL = {'NODES'        : '1',
        'TIME'         : '0-06:00:00',  # d-hh:mm:ss
        'PARTITION'    : '',
        'EXCLUDE'      : '',
-<<<<<<< Updated upstream
-       'MODULES'      : '\n',
-       'QDYN'         : 'qdyn=' + Q_DIR['$DEFAULT'] + 'qdynp',
-       'QPREP'        : Q_DIR['$DEFAULT'] + 'qprep',
-       'QFEP'         : Q_DIR['$DEFAULT'] + 'qfep',
-       'QCALC'        : Q_DIR['$DEFAULT'] + 'qcalc'
-      }
-=======
        'MODULES'      : 'module load cesga/2020\nmodule load gcc/system\nmodule load openmpi/4.0.5_ft3',
        'QDYN'         : 'qdyn=' + Q_DIR['LOCAL'] + 'qdynp',
-       'QPREP'        : Q_DIR['LOCAL'] + 'qprep',
+       'QPREP'        : Q_DIR['LOCAl'] + 'qprep',
        'QFEP'         : Q_DIR['LOCAL'] + 'qfep',
        'QCALC'        : Q_DIR['LOCAL'] + 'qcalc'
       }
->>>>>>> Stashed changes

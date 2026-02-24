@@ -207,18 +207,28 @@ class Run(object):
 
         id = itertools.count(1)
         for pdb_file in pdb_files:
+            cofactor_resi = None
+            if self.cofactors:
+                for cofactor in self.cofactors:
+                    if pdb_file == f'{cofactor}.pdb':
+                        cofactor_resi = max(self.PDB.keys(), default=0) + 1
+                        break
+            
             with open(pdb_file) as infile:
                 for at in infile:
                     if at.startswith(('ATOM', 'HETATM')):
                         at = IO.pdb_parse_in(at)
 
                         if pdb_file != 'protein.pdb':
-                            at[6] = len(self.PDB) + 1
+                            if cofactor_resi is not None:
+                                at[6] = cofactor_resi
+                            else:
+                                at[6] = max(self.PDB.keys(), default=0) + 1
                             
                         at[1] = next(id)
                         atn  = at[2]
                         resi = str(at[6])
-                        
+
                         # Change to hybrid residue name
                         if self.dual == True:
                             if resi == self.PDB2Q[self.chain][self.mutation[1]]:
@@ -362,12 +372,13 @@ class Run(object):
         pdb_tmp = f"{self.directory}/inputfiles/tmp.pdb"
         
         with open(pdb_tmp, 'w') as pdb: # Write out tmp.pdb file
-            for resi, atoms in self.PDB.items():
+            for resi, atoms in self.PDB.items(): 
                 for atom in atoms:
-                    try:
-                        pdb.write(f"{IO.pdb_parse_out(atom)}\n")
-                    except:
-                        pdb.write(atom)
+                    if resi != len(self.PDB):
+                        try:
+                            pdb.write(f"{IO.pdb_parse_out(atom)}\n")
+                        except:
+                            pdb.write(atom)
         
         with open(prm_tmp, 'w') as prm: # Write out tmp.prm file
             for header in headers:
@@ -600,6 +611,13 @@ class Run(object):
             replacements['SOLVENT'] = '1 HOH'
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
+
+        # bit ugly to join the coordinates again but in Qligfep these were never split.
+        # so the f.get_density expects a string not a list.
+        center = ' '.join(str(n) for n in self.sphere) # join not for lists as self.sphere. Convert to str each element before joining. 
+        radius = float(self.radius)
+        target_density = f.get_density('protein.pdb', center, radius)
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
         
         target_density = f.get_density('protein.pdb', self.sphere, self.radius)
         replacements['SOLUTEDENS'] = f'{target_density:.5f}'
@@ -825,7 +843,7 @@ class Run(object):
             self.replacements['STEPTOGGLE'] = 'off'
             
         if self.timestep == '2fs':
-            self.replacements['NSTEPS1'] = '1250000'
+            self.replacements['NSTEPS1'] = '250000'
             self.replacements['NSTEPS2'] = '10000'
             self.replacements['STEPSIZE'] = '2.0'
             self.replacements['STEPTOGGLE'] = 'on' 

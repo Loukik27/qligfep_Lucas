@@ -4,10 +4,10 @@
 #SBATCH --ntasks-per-node=NTASKS
 #SBATCH --job-name=JOBNAME 
 #SBATCH -A ACCOUNT
-#SBATCH -p PARTITION
 #              d-hh:mm:ss
 #SBATCH --time=TIME
-
+#SBATCH --mem=2G
+#SBATCH -P
 ## Load modules for qdynp
 MODULES
 

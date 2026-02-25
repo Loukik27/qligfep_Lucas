@@ -619,8 +619,6 @@ class Run(object):
         target_density = f.get_density('protein.pdb', center, radius)
         replacements['SOLUTEDENS'] = f'{target_density:.5f}'
         
-        target_density = f.get_density('protein.pdb', self.sphere, self.radius)
-        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
 
         libraries = [f"{self.forcefield}.lib"]
         if self.cofactors:

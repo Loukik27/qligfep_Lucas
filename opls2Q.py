@@ -209,8 +209,8 @@ class Run(object):
                     charge_group = []
                     charge = 0
 
-        #return charge_group_list                        
-        return []
+        return charge_group_list                        
+        #return []
         
     def get_parameters(self):
         for pdb in self.pdbfiles:

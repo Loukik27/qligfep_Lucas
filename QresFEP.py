@@ -207,23 +207,26 @@ class Run(object):
 
         id = itertools.count(1)
         for pdb_file in pdb_files:
-            cofactor_resi = None
             if self.cofactors:
-                for cofactor in self.cofactors:
-                    if pdb_file == f'{cofactor}.pdb':
-                        cofactor_resi = max(self.PDB.keys(), default=0) + 1
-                        break
-            
+                is_ligand = (pdb_file in [f'{cofactor}.pdb' for cofactor in self.cofactors])
+
+                if is_ligand:
+                    if self.PDB:
+                        lig_resi = max(self.PDB.keys()) + 1
+                    else:
+                        lig_resi = 1
+                    
             with open(pdb_file) as infile:
                 for at in infile:
                     if at.startswith(('ATOM', 'HETATM')):
                         at = IO.pdb_parse_in(at)
+                        
+                        if self.cofactors:
+                            if is_ligand:
+                                at[6] = lig_resi #all ligand atoms have same residue number
 
-                        if pdb_file != 'protein.pdb':
-                            if cofactor_resi is not None:
-                                at[6] = cofactor_resi
-                            else:
-                                at[6] = max(self.PDB.keys(), default=0) + 1
+                        if pdb_file != 'protein.pdb' and not is_ligand:
+                            at[6] = len(self.PDB) + 1
                             
                         at[1] = next(id)
                         atn  = at[2]

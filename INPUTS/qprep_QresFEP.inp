@@ -1,20 +1,9 @@
 !Added libraries:
-<<<<<<< Updated upstream
-rprm PRM
-
-! pdb input file
-rp PDB
-
-! solvation
-set solvent_pack 2.5
-set solute_density SOLUTEDENS
-=======
 rprm PRM 
 rp PDB 
 
 ! solvation
 set solute_density SOLUTEDENS 
->>>>>>> Stashed changes
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 

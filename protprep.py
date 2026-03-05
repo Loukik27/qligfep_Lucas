@@ -379,7 +379,7 @@ class Run(object):
                         'PROTPDB'   :   self.prot[:-4] + '_tmp.pdb',
                         'CENTER'    :   self.log['CENTER'],
                         'SPHERE'    :   '{:.1f}'.format(self.radius),
-                        'SOLVENT'   :   '4 water_eq_Q.pdb HOH',
+                        'SOLVENT'   :   '1 HOH',
                         'FF_LIB'    :   f'{s.FF_DIR}/{self.forcefield}.lib',
                         'FF_PRM'    :   f'{s.FF_DIR}/{self.forcefield}.prm',
                        }

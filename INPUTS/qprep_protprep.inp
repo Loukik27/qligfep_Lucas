@@ -5,7 +5,7 @@ rprm FF_PRM
 rp PROTPDB 
 
 ! solvation
-set solvent_pack 2.5
+set solvent_pack 3.5
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 
